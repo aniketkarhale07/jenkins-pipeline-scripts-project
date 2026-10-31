@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Code') {
+            steps {
+            
+           git branch: 'main', url: 'https://github.com/aniketkarhale07/php.git'
+
+            }
+        }
+        
+        stage('Deploy') {
+    steps {
+        sh '''
+            rm -rf /var/www/html/vp-college/*
+            cp -r ./* /var/www/html/vp-college/
+            echo "PHP Project Deployed"
+        '''
+    }
+}
+}
+}
