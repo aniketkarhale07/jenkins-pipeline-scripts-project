@@ -1,0 +1,13 @@
+node{
+    stage("Code"){
+        git branch: 'main', url: 'https://github.com/aniketkarhale07/Coffee-Shop-Website.git'
+    }
+    stage("Deploy"){
+        sh '''
+        rm -rf /var/www/html/Coffee-Shop/*
+        cp ./* /var/www/html/Coffee-Shop
+        
+        
+        '''
+    }
+}
