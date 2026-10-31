@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/aniketkarhale07/sample-react.git'
+
+                sh '''
+                    echo "===== Git Commit ====="
+                    git log -1 --oneline
+
+                    echo "===== Files from Git ====="
+                    ls -la
+
+                    echo "===== package.json ====="
+                    cat package.json
+                '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    npm install
+                    npm run build
+
+                    echo "===== Build Output ====="
+                    find dist -maxdepth 2 -type f -print
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    echo "===== Deploying Git build ====="
+
+                    rm -rf /var/www/html/react1/*
+                    cp -r dist/. /var/www/html/react1/
+
+                    echo "===== Deployed Files ====="
+                    ls -la /var/www/html/react1/
+
+                   
+            echo "===== React Deployment Completed ====="
+                '''
+            }
+        }
+    }
+}
