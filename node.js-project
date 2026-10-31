@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/aniketkarhale07/node1.git'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh '''
+                npm install
+                pm2 restart node1 || pm2 start index.js --name node1
+                pm2 save
+                
+                
+                '''
+            }
+        }
+    }
+}
